@@ -40,7 +40,7 @@ algorithm — consider re-running or lowering `CALIBRATION_MARGIN`.
 
 ## Phase 1 : Username Enumeration
 
-**Path:** `authentication/username-enumeration/username_enumeration_via_response_timing.py`
+**Path:** `authentication/username-enumeration/response-timing/username_enumeration.py`
 
 Targets a faulty design where the server takes longer to respond for valid
 usernames due to bcrypt password hashing. When a username exists, the server
@@ -87,7 +87,7 @@ count. Rejected candidates are noted as inconsistent timing.
 
 ## Phase 3 : Password Brute Force
 
-**Path:** `authentication/username-enumeration/password_bruteforce_basic_ip_protection.py`
+**Path:** `authentication/password-bruteforce/ip-protection-bypass/password_bruteforce.py`
 
 Using the confirmed username from Phase 2, brute forces the login form by
 iterating through a password wordlist. Uses `ThreadPoolExecutor` to parallelize

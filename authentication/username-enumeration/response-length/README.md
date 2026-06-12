@@ -2,12 +2,12 @@
 
 ## Overview
 Two-phase attack: username enumeration followed by password brute force.
-Both scripts use `ThreadPoolExecutor` to parallelize requests — significantly faster than sequential enumeration against large wordlists.
+Both scripts use `ThreadPoolExecutor` to parallelize requests, significantly faster than sequential enumeration against large wordlists.
 
 ---
 
-## Phase 1 — Username Enumeration via Response Length
-**Path:** `authentication/username-enumeration-response-length/username_enumeration.py`
+## Phase 1 : Username Enumeration via Response Length
+**Path:** `authentication/username-enumeration/response-length/username_enumeration.py`
 
 Targets a faulty design where the server returns a different response length depending on whether a username exists or not. The difference in response length leaks whether the username is recognized — we use this to enumerate valid usernames.
 
@@ -26,8 +26,8 @@ Targets a faulty design where the server returns a different response length dep
 
 ---
 
-## Phase 2 — Password Brute Force
-**Path:** `authentication/username-enumeration/password_bruteforce_basic.py`
+## Phase 2 : Password Brute Force
+**Path:** `authentication/password-bruteforce/basic/password_bruteforce.py`
 
 Using the viable username found from Phase 1, brute forces the login form by iterating through a password wordlist. Detects a successful auth via HTTP 302 redirect — the server redirects on valid credentials, returns a non-302 on failure.
 

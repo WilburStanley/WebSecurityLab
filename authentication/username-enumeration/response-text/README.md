@@ -7,7 +7,7 @@ Both scripts use `ThreadPoolExecutor` to parallelize requests — significantly 
 ---
 
 ## Phase 1 — Username Enumeration via Different Responses
-**Path:** `authentication/username-enumeration-text-response/username_enumeration.py`
+**Path:** `authentication/username-enumeration/response-text/username_enumeration.py`
 
 Sends POST requests for each candidate username and parses the login form's warning message via BeautifulSoup. Compares each response against a baseline (known-invalid auth) — any deviation in the warning message leaks whether the username exists on the server.
 
@@ -28,7 +28,7 @@ Sends POST requests for each candidate username and parses the login form's warn
 ---
 
 ## Phase 2 — Password Brute Force
-**Path:** `authentication/username-enumeration/password_bruteforce_basic.py`
+**Path:** `authentication/password-bruteforce/basic/password_bruteforce.py`
 
 Brute forces the password for a known valid username. Detects a successful auth via HTTP 302 redirect — the server redirects on valid credentials, returns a non-302 on failure.
 
