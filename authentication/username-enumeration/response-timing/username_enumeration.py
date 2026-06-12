@@ -13,11 +13,10 @@ CALIBRATION_MARGIN = 0.5  # Fraction of the known-valid-to-baseline gap used as 
 # e.g. 0.5 means threshold sits 50% of the way between
 # baseline avg and known-valid avg — avoids setting it too tight
 # or too loose. Lower = more sensitive, higher = stricter.
-BASELINE_USERNAME = "definitely_not_real_xyz_abc_000"
-
+BASELINE_USERNAME = "definitely_not_real_username"
 # A known-valid username on the target — used only for threshold calibration, not enumeration
 # TODO: update this to a confirmed valid username on the target
-CALIBRATION_USERNAME = "wiener"
+CALIBRATION_USERNAME = "valid_username"
 
 # LOAD WORDLIST
 with open(WORDLIST) as wordlist_file:
