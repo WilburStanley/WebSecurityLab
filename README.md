@@ -25,7 +25,7 @@ A software developer with a focus on Application Security, this
 repository documents hands on study of web offensive security
 techniques. Each script is built from scratch to understand the
 mechanics behind common web vulnerabilities, not just to run tools
-but to understand why they work and how to defend against them.
+but to understand why they work.
 
 This repository includes custom penetration testing scripts developed
 alongside each vulnerability study. Some vulnerabilities are
