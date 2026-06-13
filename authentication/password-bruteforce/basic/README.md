@@ -1,4 +1,4 @@
-# Password Brute Force — Basic
+# Password Brute Force : Basic
 
 **Path:** `authentication/password-bruteforce/basic/password_bruteforce.py`
 
