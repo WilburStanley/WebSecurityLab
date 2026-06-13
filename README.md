@@ -21,7 +21,22 @@ This repository is intended **strictly for educational purposes** in a controlle
 
 ## About
 
-This repository contains offensive penetration testing scripts focused on web security. Each folder covers a specific attack vector or vulnerability topic, along with its own README explaining usage, assumptions, and limitations.
+A software developer with a focus on Application Security, this
+repository documents hands on study of web offensive security
+techniques. Each script is built from scratch to understand the
+mechanics behind common web vulnerabilities, not just to run tools
+but to understand why they work and how to defend against them.
+
+This repository includes custom penetration testing scripts developed
+alongside each vulnerability study. Some vulnerabilities are
+approached manually, demonstrating that a strong understanding of
+the underlying mechanics is enough to exploit them without automation
+or specialized tooling.
+
+Scripts are organized by vulnerability category, each with its own
+README covering the vulnerability context, attack methodology,
+usage, assumptions, and limitations, written in the style of a
+standard security report to practice Threat Intelligence reporting.
 
 ---
 
