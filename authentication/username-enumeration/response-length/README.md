@@ -1,5 +1,23 @@
 # Authentication Attack Scripts
 
+## Vulnerability Context
+
+**Type:** Username Enumeration  
+**Category:** Information Disclosure / Authentication Weakness  
+**OWASP:** A07:2021 Identification and Authentication Failures  
+**CWE:** CWE-204 Observable Response Discrepancy
+
+Applications that return measurably different responses for valid vs 
+invalid usernames unintentionally confirm the existence of accounts. 
+Even without exposing passwords, knowing a valid username reduces a 
+brute force attack from a two-variable problem to a one-variable 
+problem, significantly lowering the effort required for unauthorized 
+access.
+
+A well-designed authentication system should return identical response 
+lengths, status codes, and messages regardless of whether the username 
+exists or not.
+
 ## Overview
 Two-phase attack: username enumeration followed by password brute force.
 Both scripts use `ThreadPoolExecutor` to parallelize requests, significantly faster than sequential enumeration against large wordlists.

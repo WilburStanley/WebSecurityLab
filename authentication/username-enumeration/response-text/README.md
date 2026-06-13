@@ -1,5 +1,24 @@
 # Authentication Attack Scripts
 
+## Vulnerability Context
+
+**Type:** Username Enumeration  
+**Category:** Information Disclosure / Improper Error Handling  
+**OWASP:** A07:2021 Identification and Authentication Failures  
+**CWE:** CWE-204 Observable Response Discrepancy
+
+Applications that return subtly different error messages for invalid 
+usernames vs invalid passwords unintentionally confirm the existence 
+of accounts. The difference can be as subtle as a single character, 
+a period, a space, or a capitalization difference, but is enough for 
+automated tools to reliably distinguish valid from invalid usernames.
+
+This is typically a human error during development, where different 
+developers write different error messages, or copy paste 
+inconsistencies appear across login form validation logic. A well 
+designed authentication system should return a single, identical, 
+generic error message regardless of which field failed validation.
+
 ## Overview
 Two-phase attack: username enumeration followed by password brute force.
 Both scripts use `ThreadPoolExecutor` to parallelize requests — significantly faster than sequential enumeration against large wordlists.

@@ -1,5 +1,27 @@
 # Authentication Attack Script
 
+## Vulnerability Context
+
+**Type:** Username Enumeration  
+**Category:** Information Disclosure / Improper Authentication Implementation  
+**OWASP:** A07:2021 Identification and Authentication Failures  
+**CWE:** CWE-208 Observable Timing Discrepancy
+
+Applications that use slow hashing algorithms for password validation
+unintentionally leak whether a username exists through measurable
+response time differences. When a username is valid, the server runs
+the full password hashing and comparison process regardless of whether
+the submitted password is correct. When a username is invalid, the
+server exits early before hashing occurs entirely, producing a
+noticeably shorter response time.
+
+This is not a flaw in the hashing algorithm itself but rather a
+failure to normalize response timing across both valid and invalid
+authentication paths. A well designed authentication system should
+run an equivalent hashing operation even for invalid usernames,
+ensuring response times remain consistent and do not leak account
+existence.
+
 ## Overview
 
 Single-script attack: timing-based username enumeration with built-in threshold
@@ -13,28 +35,26 @@ IP-based rate limiting.
 ## Baseline : Fingerprinting the Fast Path
 
 Sends a single request with a guaranteed-invalid username to measure the
-server's fast-path response time — the time it takes when no bcrypt hashing
+server's fast-path response time, the time it takes when no password hashing
 occurs. This becomes the lower reference point for threshold calculation.
 
----
+## Calibration : Measuring Real Hashing Time
 
-## Calibration : Measuring Real bcrypt Time
-
-Probes a known-valid username across multiple rounds to measure real bcrypt
-response time on the target. Uses both measurements to calculate a dynamic
-flag threshold:
+Probes a known-valid username across multiple rounds to measure real password
+hashing response time on the target. Uses both measurements to calculate a
+dynamic flag threshold:
 
 ```
 threshold = baseline + (CALIBRATION_MARGIN * (known_valid_avg - baseline))
 ```
 
 With `CALIBRATION_MARGIN = 0.5`, the threshold sits halfway between the
-baseline and the known-valid average — wide enough to catch valid usernames,
+baseline and the known-valid average, wide enough to catch valid usernames,
 strict enough to filter noise.
 
 If the gap between baseline and calibration is less than `0.5s`, the script
 will warn that the target may be under load or not using a slow hashing
-algorithm — consider re-running or lowering `CALIBRATION_MARGIN`.
+algorithm, consider re-running or lowering `CALIBRATION_MARGIN`.
 
 ---
 
@@ -43,14 +63,14 @@ algorithm — consider re-running or lowering `CALIBRATION_MARGIN`.
 **Path:** `authentication/username-enumeration/response-timing/username_enumeration.py`
 
 Targets a faulty design where the server takes longer to respond for valid
-usernames due to bcrypt password hashing. When a username exists, the server
-runs the full bcrypt comparison regardless of whether the password is correct.
-When a username does not exist, the server short-circuits before hashing
-entirely. The timing difference between these two paths leaks whether a
-username is recognized.
+usernames due to password hashing. When a username exists, the server runs
+the full password hashing and comparison process regardless of whether the
+password is correct. When a username does not exist, the server
+short-circuits before hashing entirely. The timing difference between these
+two paths leaks whether a username is recognized.
 
-A long dummy password (`"A" * 200`) is used to exaggerate the bcrypt
-computation time and widen the gap between valid and invalid responses.
+A long dummy password is used to exaggerate the hashing computation time
+and widen the gap between valid and invalid responses.
 
 ### How It Works
 
@@ -66,7 +86,7 @@ computation time and widen the gap between valid and invalid responses.
 |---|---|
 | `URL` | Target login endpoint |
 | `WORDLIST` | Path to username wordlist |
-| `PASSWORD` | Long dummy password to exaggerate bcrypt timing |
+| `PASSWORD` | Long dummy password to exaggerate hashing timing |
 | `BASELINE_USERNAME` | Guaranteed-invalid username for baseline measurement |
 | `CALIBRATION_USERNAME` | **TODO: update to a confirmed valid username on the target** |
 | `CALIBRATION_ROUNDS` | Number of rounds to probe the known-valid username |
@@ -115,10 +135,10 @@ cancels remaining threads.
 ## Assumptions & Limitations
 
 - Wordlist must contain the valid username, otherwise the script will not find a hit
-- Login form fields must be named `username` and `password` — update `data={}` if not
-- Enumeration relies on the server using a **slow hashing algorithm** (e.g. bcrypt) — targets without it will show no meaningful timing gap
-- Rate limiting must be bypassable via `X-Forwarded-For` — update or remove the spoofed headers if the target uses a different mechanism
-- A known-valid username is required upfront for calibration — `wiener` is the default for PortSwigger labs
+- Login form fields must be named `username` and `password`, update `data={}` if not
+- Enumeration relies on the server using a **slow hashing algorithm**, targets without it will show no meaningful timing gap
+- Rate limiting must be bypassable via `X-Forwarded-For`, update or remove the spoofed headers if the target uses a different mechanism
+- A known-valid username is required upfront for calibration
 
 ---
 

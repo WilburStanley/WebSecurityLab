@@ -4,6 +4,25 @@
 
 Brute forces the password for a known valid username. Detects a successful auth via HTTP 302 redirect — the server redirects on valid credentials, returns a non-302 on failure.
 
+## Vulnerability Context
+
+**Type:** Password Brute Force  
+**Category:** Broken Authentication / Missing Brute Force Protection  
+**OWASP:** A07:2021 Identification and Authentication Failures  
+**CWE:** CWE-307 Improper Restriction of Excessive Authentication Attempts
+
+Applications that impose no limit on authentication attempts allow
+attackers to systematically guess passwords without any friction or
+consequence. With no lockout mechanism, rate limiting, or CAPTCHA in
+place, the only barrier between an attacker and a valid account is
+the size of the password wordlist and the speed of the connection.
+
+This is the most straightforward authentication weakness, the
+application simply has no defense against repeated login attempts.
+A well designed authentication system should implement account lockout,
+progressive delays, or anomaly detection to restrict excessive
+authentication attempts.
+
 ---
 
 ## Usage

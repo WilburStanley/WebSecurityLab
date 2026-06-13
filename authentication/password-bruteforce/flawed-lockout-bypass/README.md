@@ -1,14 +1,28 @@
-# Password Brute Force — Flawed Lockout Bypass
+# Password Brute Force : Flawed Lockout Bypass
 
 **Path:** `authentication/password-bruteforce/flawed-lockout-bypass/password_bruteforce.py`
 
-Brute forces the password for a known valid username against a target with a flawed lockout mechanism. The server resets the failed attempt counter on any successful login — regardless of which account logged in. This script exploits that flaw by interleaving valid credentials every N attempts to keep the counter from ever reaching the lockout threshold.
+Brute forces the password for a known valid username against a target with a flawed lockout mechanism. The server resets the failed attempt counter on any successful login, regardless of which account logged in. This script exploits that flaw by interleaving valid credentials every N attempts to keep the counter from ever reaching the lockout threshold.
 
-## Vulnerability
+## Vulnerability Context
 
-This attack targets a **broken brute force protection** implementation where the lockout counter is not isolated per account. A successful login from any account resets the counter globally or per session, meaning an attacker can continuously reset it by authenticating with a known valid account between guesses.
+**Type:** Brute Force via Lockout Bypass  
+**Category:** Broken Authentication / Business Logic Flaw  
+**OWASP:** A07:2021 Identification and Authentication Failures  
+**CWE:** CWE-307 Improper Restriction of Excessive Authentication Attempts
 
-This is a business logic flaw — the lockout mechanism exists but its reset condition is too broad, making it trivially bypassable without any IP spoofing or header manipulation.
+Applications that implement account lockout mechanisms but reset the
+failed attempt counter on any successful login unintentionally allow
+attackers to bypass the protection entirely. By interleaving valid
+credentials between password guesses, the counter never reaches the
+lockout threshold, rendering the protection ineffective.
+
+This is a business logic flaw rather than a technical implementation
+error. The lockout mechanism exists and functions as intended in
+isolation, but its reset condition is too broad. A well designed
+lockout mechanism should isolate and track failed attempts per account
+independently, ensuring that a successful login from one account cannot
+influence the lockout state of another.
 
 ## Why Sequential Execution
 

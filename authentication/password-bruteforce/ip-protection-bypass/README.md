@@ -1,8 +1,26 @@
-# Password Brute Force — IP Protection Bypass
+# Password Brute Force : IP Protection Bypass
 
 **Path:** `authentication/password-bruteforce/ip-protection-bypass/password_bruteforce.py`
 
-Brute forces the password for a known valid username against a target that enforces IP based lockout. Bypasses the lockout by spoofing a different public IP on every request via proxy headers — the server trusts these headers to identify the client, making the lockout trivially bypassable.
+Brute forces the password for a known valid username against a target that enforces IP based lockout. Bypasses the lockout by spoofing a different public IP on every request via proxy headers, the server trusts these headers to identify the client, making the lockout trivially bypassable.
+
+## Vulnerability Context
+
+**Type:** Brute Force via IP Spoofing  
+**Category:** Broken Authentication / Improper Trust Boundary  
+**OWASP:** A07:2021 Identification and Authentication Failures  
+**CWE:** CWE-348 Use of Less Trusted Source for IP Address
+
+Applications that derive client identity from user controlled proxy
+headers rather than the actual network connection unintentionally allow
+attackers to spoof their IP address on every request. Since the server
+trusts these headers to identify and track clients, a different spoofed
+IP per request means the lockout counter never accumulates against the
+real attacker.
+
+A well designed IP based rate limiting system should derive the client
+IP from the actual TCP connection rather than relying on headers that
+any client can freely set and modify.
 
 ## Usage
 
